@@ -1,5 +1,8 @@
 from pathlib import Path
 
+import pytesseract
+from PIL import Image
+
 SUPPORTED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
 
 
@@ -15,7 +18,15 @@ def validate_image(file_path: str) -> Path:
     return path
 
 
-def extract_text_from_image(file_path: str) -> str:
-    path = validate_image(file_path)
+def clean_ocr_text(text: str) -> str:
+    return "\n".join(line.strip() for line in text.splitlines() if line.strip())
 
-    return f"OCR placeholder for image: {path.name}"
+
+import pytesseract
+from PIL import Image
+
+
+def extract_text_from_image(path):
+    image = Image.open(path)
+    text = pytesseract.image_to_string(image)
+    return text.strip()
