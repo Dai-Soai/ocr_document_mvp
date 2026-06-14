@@ -2,12 +2,23 @@ import json
 from pathlib import Path
 
 
+def get_text_lines(extracted_text: str) -> list[str]:
+    return [line.strip() for line in extracted_text.splitlines() if line.strip()]
+
+
 def render_json_report(image_path: str, extracted_text: str) -> dict:
+    lines = get_text_lines(extracted_text)
+
     return {
         "image_path": image_path,
-        "characters": len(extracted_text),
-        "lines": [line for line in extracted_text.splitlines() if line.strip()],
-        "text": extracted_text,
+        "metadata": {
+            "characters": len(extracted_text),
+            "line_count": len(lines),
+        },
+        "ocr": {
+            "lines": lines,
+            "text": extracted_text,
+        },
     }
 
 

@@ -1,6 +1,14 @@
 import json
 
-from ocr_document.exporter import export_json_report, render_json_report
+from ocr_document.exporter import export_json_report, get_text_lines, render_json_report
+
+
+def test_get_text_lines_removes_empty_lines():
+    text = "RADAR OCR\n\n   \nDocument MVP\n"
+
+    lines = get_text_lines(text)
+
+    assert lines == ["RADAR OCR", "Document MVP"]
 
 
 def test_render_json_report():
@@ -10,9 +18,10 @@ def test_render_json_report():
     )
 
     assert report["image_path"] == "sample.png"
-    assert report["characters"] == len("RADAR OCR\nDocument MVP")
-    assert report["lines"] == ["RADAR OCR", "Document MVP"]
-    assert "RADAR OCR" in report["text"]
+    assert report["metadata"]["characters"] == len("RADAR OCR\nDocument MVP")
+    assert report["metadata"]["line_count"] == 2
+    assert report["ocr"]["lines"] == ["RADAR OCR", "Document MVP"]
+    assert "RADAR OCR" in report["ocr"]["text"]
 
 
 def test_export_json_report(tmp_path):
@@ -28,4 +37,6 @@ def test_export_json_report(tmp_path):
 
     assert result.exists()
     assert data["image_path"] == "sample.png"
-    assert data["text"] == "Extracted OCR text"
+    assert data["metadata"]["characters"] == len("Extracted OCR text")
+    assert data["metadata"]["line_count"] == 1
+    assert data["ocr"]["text"] == "Extracted OCR text"
