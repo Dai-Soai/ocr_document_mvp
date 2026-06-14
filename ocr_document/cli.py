@@ -1,5 +1,6 @@
 import argparse
 
+from ocr_document.batch import process_directory
 from ocr_document.exporter import export_json_report
 from ocr_document.ocr import extract_text_from_image
 
@@ -20,7 +21,11 @@ def main():
         description="OCR Document MVP",
     )
 
-    parser.add_argument("image", help="Path to image file")
+    parser.add_argument(
+        "image",
+        nargs="?",
+        help="Path to image file",
+    )
 
     parser.add_argument(
         "--json",
@@ -38,8 +43,24 @@ def main():
         action="store_true",
         help="Suppress normal output except export messages",
     )
+    parser.add_argument(
+        "--batch",
+        help="Process all images in directory",
+    )
 
     args = parser.parse_args()
+
+    if args.batch:
+        processed = process_directory(
+            args.batch,
+            "outputs/batch_reports",
+        )
+
+        print(f"Processed {len(processed)} image(s)")
+        return
+
+    if not args.image:
+        parser.error("image is required unless --batch is used")
 
     text = extract_text_from_image(args.image)
 
