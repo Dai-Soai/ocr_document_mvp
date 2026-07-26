@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from ocr_document.batch import process_directory
 
 

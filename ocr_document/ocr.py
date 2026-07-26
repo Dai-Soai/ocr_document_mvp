@@ -1,6 +1,7 @@
+from typing import Any
 from pathlib import Path
 
-import pytesseract
+import pytesseract  # type: ignore[import-untyped]
 from PIL import Image
 
 SUPPORTED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
@@ -22,11 +23,7 @@ def clean_ocr_text(text: str) -> str:
     return "\n".join(line.strip() for line in text.splitlines() if line.strip())
 
 
-import pytesseract
-from PIL import Image
-
-
-def extract_text_from_image(path):
+def extract_text_from_image(path: Any) -> Any:
     image = Image.open(path)
     text = pytesseract.image_to_string(image)
     return text.strip()

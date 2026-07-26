@@ -1,3 +1,4 @@
+from typing import Any
 import json
 from pathlib import Path
 
@@ -6,7 +7,7 @@ def get_text_lines(extracted_text: str) -> list[str]:
     return [line.strip() for line in extracted_text.splitlines() if line.strip()]
 
 
-def render_json_report(image_path: str, extracted_text: str) -> dict:
+def render_json_report(image_path: str, extracted_text: str) -> dict[str, Any]:
     lines = get_text_lines(extracted_text)
 
     return {

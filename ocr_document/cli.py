@@ -1,3 +1,4 @@
+from typing import Any
 import argparse
 
 from ocr_document.batch import process_directory
@@ -5,7 +6,7 @@ from ocr_document.exporter import export_json_report
 from ocr_document.ocr import extract_text_from_image
 
 
-def print_full_output(image_path: str, text: str):
+def print_full_output(image_path: str, text: str) -> Any:
     print("=" * 60)
     print("OCR DOCUMENT MVP")
     print("=" * 60)
@@ -15,7 +16,7 @@ def print_full_output(image_path: str, text: str):
     print(text)
 
 
-def main():
+def main() -> Any:
     parser = argparse.ArgumentParser(
         prog="ocr-doc",
         description="OCR Document MVP",
